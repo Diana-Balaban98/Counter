@@ -1,0 +1,15 @@
+.button {
+    padding: 5px;
+    width: 120px;
+    border: none;
+    border-radius: 10px;
+    background-color: #E6E6FA;
+    font-size: 30px;
+    font-weight: 600;
+    color: #282c34;
+    cursor: pointer;
+}
+
+.buttonDisabled {
+    opacity: 0.5;
+}

@@ -1,0 +1,39 @@
+.wrapperCounter {
+    margin: 100px auto;
+    padding: 10px;
+    max-width: 280px;
+    width: 100%;
+    height: 280px;
+    border-radius: 10px;
+    border: 3px solid #800080;
+    background-color: #DA70D6;
+}
+
+.scoreboard {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    height: 170px;
+    border-radius: 5px;
+    background-color: #F5F5F5;
+}
+
+.score {
+    font-size: 50px;
+    color: #282c34;
+}
+
+.limit {
+    color: red;
+}
+
+.wrapperButtons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 3px solid #800080;
+}
