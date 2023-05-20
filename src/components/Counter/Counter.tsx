@@ -6,11 +6,13 @@ import {Button} from "../Button/Button";
 
 export const Counter = () => {
     const [inc, setInc] = useState(0);
+
     const incForButton = () => {
         if (inc < 5) {
             setInc(inc + 1)
         }
     }
+
     const resetForButton = () => {
         setInc(0)
     }
