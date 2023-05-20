@@ -1,15 +1,21 @@
-import React from 'react';
+import React, {useState} from 'react';
 import s from './Counter.module.css'
 import {Button} from "../Button/Button";
 
 
-type CounterPropsType = {
-    inc: number
-    incForButton: () => void
-    resetForButton: () => void
-}
 
-export const Counter = ({inc, incForButton, resetForButton}: CounterPropsType) => {
+export const Counter = () => {
+    const [inc, setInc] = useState(0);
+    const incForButton = () => {
+        if (inc < 5) {
+            setInc(inc + 1)
+        }
+    }
+    const resetForButton = () => {
+        setInc(0)
+    }
+
+
     return (
         <div className={s.wrapperCounter}>
             <div className={s.scoreboard}>
