@@ -5,7 +5,7 @@ import {Button} from "../Button/Button";
 
 
 export const Counter = () => {
-    const [inc, setInc] = useState(0);
+    const [inc, setInc] = useState<number>(0);
 
     const incForButton = () => {
         if (inc < 5) {
