@@ -3,7 +3,6 @@ import s from './Counter.module.css'
 import {Button} from "../Button/Button";
 
 
-
 export const Counter = () => {
     const [inc, setInc] = useState<number>(0);
 
@@ -21,9 +20,9 @@ export const Counter = () => {
     return (
         <div className={s.wrapperCounter}>
             <div className={s.scoreboard}>
-               <div className={`${s.score} ${inc === 5? s.limit : ""}`}>
-                   {inc}
-               </div>
+                <div className={`${s.score} ${inc === 5 ? s.limit : ""}`}>
+                    {inc}
+                </div>
             </div>
 
             <div className={s.wrapperButtons}>
