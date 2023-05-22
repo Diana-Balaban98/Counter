@@ -16,7 +16,6 @@ export const Counter = () => {
         setInc(0)
     }
 
-
     return (
         <div className={s.wrapperCounter}>
             <div className={s.scoreboard}>
