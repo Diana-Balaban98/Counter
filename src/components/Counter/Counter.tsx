@@ -1,34 +1,86 @@
-import React, {useState} from 'react';
-import s from './Counter.module.css'
+import React, {useEffect, useState} from 'react';
+import s from '../Wrapper.module.css'
 import {Button} from "../Button/Button";
 
 
-export const Counter = () => {
-    const [inc, setInc] = useState<number>(0);
+type CounterPropsType = {
+    maxValue: number
+    startValue: number
+    generalConditionForValues: boolean
+}
+
+export const Counter = ({maxValue, startValue, generalConditionForValues}: CounterPropsType) => {
+    const [counter, setCounter] = useState(0);
+    const [isAlert, setAlert] = useState(false);
+
+    const styleForError = `${s.alert} ${s.red}`;
+    const styleForCounter = `${s.alert} ${counter === maxValue ? s.red : ""}`
 
     const incForButton = () => {
-        if (inc < 5) {
-            setInc(inc + 1)
+        if (counter < maxValue) {
+            setCounter(counter + 1)
         }
     }
 
     const resetForButton = () => {
-        setInc(0)
+        setCounter(startValue)
     }
 
-    return (
-        <div className={s.wrapperCounter}>
-            <div className={s.scoreboard}>
-                <div className={`${s.score} ${inc === 5 ? s.limit : ""}`}>
-                    {inc}
-                </div>
-            </div>
+    useEffect(() => {
+        localStorage.setItem('startValue', JSON.stringify(startValue))
+    }, [startValue])
 
-            <div className={s.wrapperButtons}>
-                <Button disable={inc === 5} name="inc" callBack={incForButton}/>
-                <Button disable={!inc} name="reset" callBack={resetForButton}/>
+
+    useEffect(() => {
+        if (startValue > 0 || maxValue > maxValue + 1) {
+            setAlert(true)
+        }
+    },[startValue, maxValue])
+
+    //
+    // useEffect(() => {
+    //     const newValue = localStorage.getItem('startValue')
+    //     if (newValue) {
+    //         setInc(JSON.parse(newValue))
+    //     }
+    // }, [])
+
+
+    const submitValue = () => {
+        setAlert(false)
+        // setInc(startValue)
+        const newValue = localStorage.getItem('startValue')
+        if (newValue) {
+            setCounter(JSON.parse(newValue))
+        }
+    }
+
+
+
+
+
+return (<div className={s.wrapperCounter}>
+        <div className={s.scoreboard}>
+            <div>
+                {
+                    generalConditionForValues ? (<span className={styleForError}>Incorrect value!</span>)
+                        : isAlert ? (<span className={s.alert}>enter values and press "set"</span>) :
+                            <span className={styleForCounter}>{counter}</span>
+                }
             </div>
         </div>
-    );
-};
+
+        <div className={s.wrapperButtons}>
+            <Button
+                disable={counter === maxValue}
+                name="inc"
+                callBack={incForButton}/>
+            <Button
+                name="reset"
+                callBack={resetForButton}/>
+        </div>
+    </div>
+);
+}
+
 
