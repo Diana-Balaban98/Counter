@@ -1,21 +1,19 @@
 import React, {ChangeEvent} from 'react';
-import s from "./Input.module.css"
 
-type InputPropsType = {
-    callBack: (value: number) => void
+type InputPropType = {
+    callBack: (value: string) => void
     value: number
-    condition: boolean
+    condition: string
 }
 
-export const Input = ({value, callBack, condition}: InputPropsType) => {
-    const styleForInput = condition ? s.inputError : ""
+export const Input = ({value, callBack, condition}: InputPropType) => {
 
-    const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        callBack(Number(event.currentTarget.value))
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        callBack(e.currentTarget.value)
     }
 
     return <input
-                className={styleForInput}
+                className={condition}
                 value={value}
                 type="number"
                 onChange={onChangeHandler}

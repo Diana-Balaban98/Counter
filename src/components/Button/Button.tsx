@@ -1,20 +1,22 @@
 import React from 'react';
 import s from './Button.module.css'
 
-type ButtonPropsType = {
+type ButtonPropType = {
     name: string
     callBack: () => void
-    disable?: boolean
+    disable: boolean
 }
 
-export const Button = ({name, callBack, disable}: ButtonPropsType) => {
+export const Button = ({name, callBack, disable}: ButtonPropType) => {
+    const disableButton = `${s.button} ${!disable ? "" : s.buttonDisabled}`
+
     const onClickHandler = () => {
         callBack()
     }
 
     return (
         <button
-            className={`${s.button} ${!disable ? "" : s.buttonDisabled}`}
+            className={disableButton}
             disabled={disable}
             onClick={onClickHandler}
         >

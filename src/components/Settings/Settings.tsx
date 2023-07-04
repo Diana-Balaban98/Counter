@@ -1,65 +1,69 @@
-import React, {ChangeEvent} from 'react';
+import React from 'react';
 import s from "../Wrapper.module.css"
 import {Button} from "../Button/Button";
+import {ConditionsForValuesType, InitialValuesType} from "../../App";
+import {Input} from "../Input/Input";
 
-type SettingsPropsType = {
-    maxValue: number
-    setMaxValue: (value: number) => void
-    startValue: number
-    setStartValue: (value: number) => void
-    conditionForMax: boolean
-    conditionForStart: boolean
+type SettingsPropType = {
+    initialValues: InitialValuesType
+    conditionsForValues: ConditionsForValuesType
+    setAlertMessage: (value: boolean) => void
 }
 
-export const Settings = ({maxValue,
-                             setMaxValue,
-                             setStartValue,
-                             startValue,
-                             ...restProps}: SettingsPropsType) => {
-    // const onChangeHandler = (setState: React.Dispatch<React.SetStateAction<number>>) => {
-    //     return (event: ChangeEvent<HTMLInputElement>) => {
-    //         setState(Number(event.currentTarget.value))
-    //     }
+export const Settings = ({
+                             initialValues,
+                             conditionsForValues,
+                             setAlertMessage
+                         }: SettingsPropType) => {
+    const {conditionForStart, generalConditionForValues, conditionForMax} = conditionsForValues;
+    const {maxValue, startValue, setMaxValue, setStartValue, setCounter} = initialValues
 
-    const onChangeMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
-        setMaxValue(Number(e.currentTarget.value))
+    const onChangeMaxValue = (maxValue: string) => {
+        setMaxValue(Number(maxValue))
+    }
+    const onChangeStartValue = (startValue: string) => {
+        setStartValue(Number(startValue))
     }
 
-    const onChangeStartValue = (e: ChangeEvent<HTMLInputElement>) => {
-        setStartValue(Number(e.currentTarget.value))
+    const setValueForCounter = () => {
+        setAlertMessage(false)
+        setCounter(startValue)
     }
+
 
     return (
         <div className={s.wrapperCounter}>
+            <h2 style={{margin: "0px"}}>Settings</h2>
             <div className={s.scoreboard}>
                 <div>
                     <div>
                         <span className={s.value}>max value: </span>
-                        <input
-                            className={restProps.conditionForMax ? s.inputError : ""}
-                            type="number"
+                        <Input
+                            callBack={onChangeMaxValue}
                             value={maxValue}
-                            onChange={onChangeMaxValue}
+                            condition={conditionForMax ? s.inputError : ""}
                         />
                     </div>
-                         <span className={s.value}>start value: </span>
-                    <input
-                        className={restProps.conditionForStart ? s.inputError : ""}
-                        type="number"
+                    <span className={s.value}>start value: </span>
+                    <Input
+                        callBack={onChangeStartValue}
                         value={startValue}
-                        onChange={onChangeStartValue}
+                        condition={conditionForStart ? s.inputError : ""}
                     />
                 </div>
             </div>
 
             <div className={s.wrapperButtons}>
                 <Button
-                    // disable={maxValue === startValue || startValue < 0}
+                    disable={generalConditionForValues}
                     name="set"
-                    callBack={() => {}}/>
+                    callBack={setValueForCounter}/>
             </div>
         </div>
     );
 };
+
+
+
 
 

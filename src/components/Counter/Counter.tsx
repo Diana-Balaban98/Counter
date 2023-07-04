@@ -1,23 +1,33 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import s from '../Wrapper.module.css'
 import {Button} from "../Button/Button";
+import {InitialValuesType} from "../../App";
 
 
-type CounterPropsType = {
-    maxValue: number
-    startValue: number
+type CounterPropType = {
+    initialValues: InitialValuesType
     generalConditionForValues: boolean
+    alertMessage: boolean
+    setAlertMessage: (value: boolean) => void
 }
 
-export const Counter = ({maxValue, startValue, generalConditionForValues}: CounterPropsType) => {
-    const [counter, setCounter] = useState(0);
-    const [isAlert, setAlert] = useState(false);
+export const Counter = ({initialValues, generalConditionForValues, setAlertMessage, alertMessage}: CounterPropType) => {
 
+
+    const descriptionForDisplay = {
+        inCorrectValue: "Incorrect value!",
+        correctValue: "enter values and press 'set'"
+    }
+
+    const {maxValue, startValue, counter, setCounter} = initialValues
+    const equalValues = counter === maxValue
+
+    const disableForInc = equalValues || counter === null;
     const styleForError = `${s.alert} ${s.red}`;
-    const styleForCounter = `${s.alert} ${counter === maxValue ? s.red : ""}`
+    const styleForCounter = `${s.alert} ${equalValues ? s.red : ""}`
 
     const incForButton = () => {
-        if (counter < maxValue) {
+        if (counter !== null && counter < maxValue) {
             setCounter(counter + 1)
         }
     }
@@ -27,60 +37,47 @@ export const Counter = ({maxValue, startValue, generalConditionForValues}: Count
     }
 
     useEffect(() => {
+        maxValue > 0 && setAlertMessage(true)
+
         localStorage.setItem('startValue', JSON.stringify(startValue))
-    }, [startValue])
+    }, [startValue, maxValue])
 
 
+    let newValue;
     useEffect(() => {
-        if (startValue > 0 || maxValue > maxValue + 1) {
-            setAlert(true)
-        }
-    },[startValue, maxValue])
-
-    //
-    // useEffect(() => {
-    //     const newValue = localStorage.getItem('startValue')
-    //     if (newValue) {
-    //         setInc(JSON.parse(newValue))
-    //     }
-    // }, [])
-
-
-    const submitValue = () => {
-        setAlert(false)
-        // setInc(startValue)
-        const newValue = localStorage.getItem('startValue')
+        newValue = localStorage.getItem('startValue')
         if (newValue) {
             setCounter(JSON.parse(newValue))
         }
-    }
+    }, [])
 
 
+    return (
+        <div className={s.wrapperCounter}>
+            <h2 style={{margin: "0px"}}>Counter</h2>
+            <div className={s.scoreboard}>
+                <div>
+                    {
+                        generalConditionForValues ? (
+                                <p className={styleForError}>{descriptionForDisplay.inCorrectValue}</p>)
+                            : alertMessage ? (<p className={s.alert}>{descriptionForDisplay.correctValue}</p>) :
+                                <p className={styleForCounter}>{counter}</p>
+                    }
+                </div>
+            </div>
 
-
-
-return (<div className={s.wrapperCounter}>
-        <div className={s.scoreboard}>
-            <div>
-                {
-                    generalConditionForValues ? (<span className={styleForError}>Incorrect value!</span>)
-                        : isAlert ? (<span className={s.alert}>enter values and press "set"</span>) :
-                            <span className={styleForCounter}>{counter}</span>
-                }
+            <div className={s.wrapperButtons}>
+                <Button
+                    disable={disableForInc}
+                    name="inc"
+                    callBack={incForButton}/>
+                <Button
+                    disable={!counter}
+                    name="reset"
+                    callBack={resetForButton}/>
             </div>
         </div>
-
-        <div className={s.wrapperButtons}>
-            <Button
-                disable={counter === maxValue}
-                name="inc"
-                callBack={incForButton}/>
-            <Button
-                name="reset"
-                callBack={resetForButton}/>
-        </div>
-    </div>
-);
+    );
 }
 
 
