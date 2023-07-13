@@ -8,12 +8,14 @@ type SettingsPropType = {
     initialValues: InitialValuesType
     conditionsForValues: ConditionsForValuesType
     setAlertMessage: (value: boolean) => void
+    disabled: boolean
+    setDisabled: (value: boolean) => void
 }
 
 export const Settings = ({
                              initialValues,
                              conditionsForValues,
-                             setAlertMessage
+                             setAlertMessage, setDisabled, disabled
                          }: SettingsPropType) => {
     const {conditionForStart, generalConditionForValues, conditionForMax} = conditionsForValues;
     const {maxValue, startValue, setMaxValue, setStartValue, setCounter} = initialValues
@@ -28,7 +30,9 @@ export const Settings = ({
     const setValueForCounter = () => {
         setAlertMessage(false)
         setCounter(startValue)
+        setDisabled(true)
     }
+
 
 
     return (
@@ -55,7 +59,7 @@ export const Settings = ({
 
             <div className={s.wrapperButtons}>
                 <Button
-                    disable={generalConditionForValues}
+                    disable={disabled || generalConditionForValues}
                     name="set"
                     callBack={setValueForCounter}/>
             </div>

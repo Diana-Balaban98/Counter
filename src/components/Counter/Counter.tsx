@@ -8,6 +8,8 @@ type CounterPropType = {
     generalConditionForValues: boolean
     alertMessage: boolean
     setAlertMessage: (value: boolean) => void
+    disabled: boolean
+    setDisabled: (value: boolean) => void
 }
 
 export const Counter = ({initialValues, generalConditionForValues, setAlertMessage, alertMessage}: CounterPropType) => {
@@ -20,7 +22,7 @@ export const Counter = ({initialValues, generalConditionForValues, setAlertMessa
     const {maxValue, startValue, counter, setCounter} = initialValues
     const equalValues = counter === maxValue
 
-    const disableForInc = equalValues || counter === null;
+    const disableForInc = equalValues || !!descriptionForDisplay.inCorrectValue
     const styleForError = `${s.alert} ${s.red}`;
     const styleForCounter = `${s.alert} ${equalValues ? s.red : ""}`
 
@@ -34,20 +36,6 @@ export const Counter = ({initialValues, generalConditionForValues, setAlertMessa
         setCounter(startValue)
     }
 
-    useEffect(() => {
-        maxValue > 0 && setAlertMessage(true)
-
-        localStorage.setItem('startValue', JSON.stringify(startValue))
-    }, [startValue, maxValue])
-
-
-    let newValue;
-    useEffect(() => {
-        newValue = localStorage.getItem('startValue')
-        if (newValue) {
-            setCounter(JSON.parse(newValue))
-        }
-    }, [])
 
     return (
         <div className={s.wrapperCounter}>
